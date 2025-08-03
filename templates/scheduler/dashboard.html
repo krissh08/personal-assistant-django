@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Welcome, {{ user.username }}!</h1>
+    <form action="{% url 'logout' %}" method="post" style="margin-bottom: 20px;">
+        {% csrf_token %}
+        <button type="submit">Logout</button>
+    </form>
+
+    <h2>Add a New Event</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Add Event</button>
+    </form>
+
+    <hr style="margin: 20px 0;">
+
+    <h2>Your Upcoming Events</h2>
+    {% for event in events %}
+        <div class="event">
+            <p><strong>{{ event.title }}</strong></p>
+            <p>{{ event.description }}</p>
+            <p>Time: {{ event.event_time }}</p>
+        </div>
+    {% empty %}
+        <p class="no-events">You have no upcoming events scheduled.</p>
+    {% endfor %}
+{% endblock %}

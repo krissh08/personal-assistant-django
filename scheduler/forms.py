@@ -10,7 +10,7 @@ class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(required=True)
     username = forms.CharField(
         max_length=12,
-        help_text='Required. 12 characters or fewer. Letters, numbers, and . _ characters only.',
+        help_text='THIS IS THE FINAL FORMS.PY FIX',
         validators=[
             RegexValidator(
                 r'^[a-zA-Z0-9._]+$',

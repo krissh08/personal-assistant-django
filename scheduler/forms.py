@@ -10,7 +10,7 @@ class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(required=True)
     username = forms.CharField(
         max_length=12,
-        help_text='THIS IS THE FINAL FORMS.PY FIX',
+        help_text='Required. 12 characters or fewer. Letters, numbers, and . _ only.',
         validators=[
             RegexValidator(
                 r'^[a-zA-Z0-9._]+$',
@@ -21,7 +21,6 @@ class CustomUserCreationForm(UserCreationForm):
 
     class Meta(UserCreationForm.Meta):
         model = User
-        # This line correctly lists all fields for display and validation.
         fields = ("username", "email", "password", "password2")
 
 

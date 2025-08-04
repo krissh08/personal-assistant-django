@@ -1,1 +1,1 @@
-web: gunicorn personal_assistant.wsgi
+worker: celery -A personal_assistant worker -l info

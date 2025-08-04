@@ -1,13 +1,91 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h2>Create an Account</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Sign Up</button>
-    </form>
-     <div style="text-align: center; margin-top: 20px;">
-        <p>Already have an account? <a href="{% url 'login' %}">Log In</a></p>
-    </div>
+<style>
+    /* Add styles for the password container and the eye icon */
+    .password-container {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+    .password-container input {
+        width: 100%; /* Make input take full width of container */
+    }
+    .toggle-password {
+        position: absolute;
+        right: 15px;
+        cursor: pointer;
+        color: #555;
+    }
+</style>
+
+<h2>Create an Account</h2>
+<form method="post">
+    {% csrf_token %}
+
+    <p>
+        <label for="id_username">Username:</label>
+        {{ form.username }}
+        {% if form.username.help_text %}
+            <small class="helptext">{{ form.username.help_text|safe }}</small>
+        {% endif %}
+        {{ form.username.errors }}
+    </p>
+    
+    <p>
+        <label for="id_password1">Password:</label>
+        <div class="password-container">
+            {{ form.password }}
+            <span class="toggle-password" onclick="togglePasswordVisibility('id_password1', this)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
+                    <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.618-2.345C4.387 4.144 6.273 3.5 8 3.5c1.727 0 3.613.644 5.209 2.155A13.133 13.133 0 0 1 14.828 8c-.838 1.373-2.28 2.51-4.038 3.345C9.613 12.356 7.727 13 6 13c-1.727 0-3.613-.644-5.209-2.155A13.133 13.133 0 0 1 1.173 8z"/>
+                    <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
+                </svg>
+            </span>
+        </div>
+        {% if form.password.help_text %}
+            <small class="helptext">{{ form.password.help_text|safe }}</small>
+        {% endif %}
+        {{ form.password.errors }}
+    </p>
+
+    <p>
+        <label for="id_password2">Password confirmation:</label>
+        <div class="password-container">
+            {{ form.password2 }}
+            <span class="toggle-password" onclick="togglePasswordVisibility('id_password2', this)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
+                    <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.618-2.345C4.387 4.144 6.273 3.5 8 3.5c1.727 0 3.613.644 5.209 2.155A13.133 13.133 0 0 1 14.828 8c-.838 1.373-2.28 2.51-4.038 3.345C9.613 12.356 7.727 13 6 13c-1.727 0-3.613-.644-5.209-2.155A13.133 13.133 0 0 1 1.173 8z"/>
+                    <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
+                </svg>
+            </span>
+        </div>
+        {% if form.password2.help_text %}
+            <small class="helptext">{{ form.password2.help_text|safe }}</small>
+        {% endif %}
+        {{ form.password2.errors }}
+    </p>
+
+    <button type="submit">Sign Up</button>
+</form>
+<div style="text-align: center; margin-top: 20px;">
+    <p>Already have an account? <a href="{% url 'login' %}">Log In</a></p>
+</div>
+
+<script>
+    const eyeIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16"><path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.618-2.345C4.387 4.144 6.273 3.5 8 3.5c1.727 0 3.613.644 5.209 2.155A13.133 13.133 0 0 1 14.828 8c-.838 1.373-2.28 2.51-4.038 3.345C9.613 12.356 7.727 13 6 13c-1.727 0-3.613-.644-5.209-2.155A13.133 13.133 0 0 1 1.173 8z"/><path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/></svg>`;
+    const eyeSlashIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-eye-slash" viewBox="0 0 16 16"><path d="M13.359 11.238C15.06 9.72 16 8 16 8s-3-5.5-8-5.5a7.028 7.028 0 0 0-2.79.588l.77.771A5.944 5.944 0 0 1 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.134 13.134 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755-.165.165-.337.328-.517.486l.708.709z"/><path d="M11.297 9.176a3.5 3.5 0 0 0-4.474-4.474l.823.823a2.5 2.5 0 0 1 2.829 2.829l.822.822zm-2.943 1.288l.822.822a3.5 3.5 0 0 1-4.474-4.474l.823.823a2.5 2.5 0 0 0 2.829 2.829z"/><path d="M3.35 5.47c-.18.16-.353.322-.518.487A13.134 13.134 0 0 0 1.172 8l.195.288c.335.48.83 1.12 1.465 1.755C4.121 11.332 5.881 12.5 8 12.5c.716 0 1.39-.133 2.02-.36l.77.772A7.029 7.029 0 0 1 8 13C3 13 0 8 0 8s3-5.5 8-5.5a7.02 7.02 0 0 1 1.546.223l.77.771A5.944 5.944 0 0 0 8 3.5C6.12 3.5 4.38 4.668 3.043 5.957l.307-.307z"/><path d="M14.229 15.776L1.223 2.771 2.771 1.224l13.006 13.006-1.548 1.548z"/></svg>`;
+
+    function togglePasswordVisibility(fieldId, iconElement) {
+        const passwordField = document.getElementById(fieldId);
+        if (passwordField.type === 'password') {
+            passwordField.type = 'text';
+            iconElement.innerHTML = eyeSlashIcon;
+        } else {
+            passwordField.type = 'password';
+            iconElement.innerHTML = eyeIcon;
+        }
+    }
+</script>
+
 {% endblock %}

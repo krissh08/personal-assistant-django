@@ -2,11 +2,11 @@
 
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm # This line is important
 from .models import Event
-from .forms import EventForm, CustomUserCreationForm
+from .forms import EventForm, CustomUserCreationForm 
 
 def home(request):
-    # This view just renders the homepage template
     return render(request, 'scheduler/home.html')
 
 @login_required
@@ -30,12 +30,12 @@ def dashboard(request):
 
 def register(request):
     if request.method == 'POST':
-        form = CustomUserCreationForm(request.POST) # Use the custom form
+        form = CustomUserCreationForm(request.POST) 
         if form.is_valid():
             form.save()
             return redirect('login')
     else:
-        form = CustomUserCreationForm() # Use the custom form
+        form = CustomUserCreationForm()
     
     context = {'form': form}
     return render(request, 'scheduler/register.html', context)

@@ -7,7 +7,7 @@ from django.core.validators import RegexValidator
 from .models import Event
 
 class CustomUserCreationForm(UserCreationForm):
-    # We define our custom fields here
+    # This part is fine
     email = forms.EmailField(required=True)
     username = forms.CharField(
         max_length=12,
@@ -22,11 +22,11 @@ class CustomUserCreationForm(UserCreationForm):
 
     class Meta(UserCreationForm.Meta):
         model = User
-        # THIS IS THE CORRECTED LINE
-        # We only specify the fields we want to ADD to the form (email)
-        fields = UserCreationForm.Meta.fields + ('email',)
+        # THIS IS THE CORRECTED LINE.
+        # It must explicitly list all the fields for the form.
+        fields = ("username", "email", "password", "password2")
 
-# ... The rest of the file (EventForm) remains the same ...
+# The EventForm remains the same
 class EventForm(forms.ModelForm):
     class Meta:
         model = Event

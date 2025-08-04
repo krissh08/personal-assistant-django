@@ -7,9 +7,10 @@ from django.core.validators import RegexValidator
 from .models import Event
 
 class CustomUserCreationForm(UserCreationForm):
+    email = forms.EmailField(required=True) # Ensure the email field is required
     username = forms.CharField(
         max_length=12,
-        help_text='Required. 12 characters or fewer. Letters, digits and ./_ only.',
+        help_text='Required. 12 characters or fewer. Letters, numbers, and . _ characters only.',
         validators=[
             RegexValidator(
                 r'^[a-zA-Z0-9._]+$',
@@ -20,7 +21,8 @@ class CustomUserCreationForm(UserCreationForm):
 
     class Meta(UserCreationForm.Meta):
         model = User
-        fields = UserCreationForm.Meta.fields + ('email',)
+        # This is the corrected line that includes the email field
+        fields = ('username', 'email', 'password', 'password2')
 
 class EventForm(forms.ModelForm):
     class Meta:

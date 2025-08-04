@@ -7,7 +7,6 @@ from django.core.validators import RegexValidator
 from .models import Event
 
 class CustomUserCreationForm(UserCreationForm):
-    # Our custom fields are defined here
     email = forms.EmailField(required=True)
     username = forms.CharField(
         max_length=12,
@@ -22,8 +21,7 @@ class CustomUserCreationForm(UserCreationForm):
 
     class Meta(UserCreationForm.Meta):
         model = User
-        # THIS IS THE KEY: We must list all fields to ensure they are
-        # included in the form. This was the source of all the problems.
+        # This line correctly lists all fields for display and validation.
         fields = ("username", "email", "password", "password2")
 
 

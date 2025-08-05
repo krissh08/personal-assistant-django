@@ -11,14 +11,17 @@ class CustomUserCreationForm(UserCreationForm):
     username = forms.CharField(
         max_length=12,
         help_text='Required. 12 characters or fewer. Letters, numbers, and . _ characters only.',
-        validators=[ ... ], # This part is fine
+        validators=[
+            RegexValidator(
+                r'^[a-zA-Z0-9._]+$',
+                'Enter a valid username. This value may contain only letters, numbers, and . / _ characters.'
+            ),
+        ],
     )
 
     class Meta(UserCreationForm.Meta):
         model = User
         fields = ("username", "email", "password", "password2")
-
-# ... The rest of the file (EventForm) ...
 
 
 class EventForm(forms.ModelForm):
